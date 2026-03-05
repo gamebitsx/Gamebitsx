@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1e3c72">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Bodegas BSF Laguna Sur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 15px;
+            padding-bottom: 80px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            font-size: 1.6em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .subtitle {
+            color: #666;
+            font-size: 0.95em;
+            background: #f0f4f8;
+            padding: 10px 20px;            border-radius: 25px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .creator-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            margin-top: 15px;
+            font-weight: 600;
+            display: inline-block;
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+            font-size: 1em;
+        }
+
+        .creator-badge span {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+
+        .search-box {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #1e3c72;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(30, 60, 114, 0.1);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-export {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-import {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .stats {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .stat-number {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #1e3c72;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .warehouses-list {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .list-header h2 {
+            color: #1e3c72;
+            font-size: 1.3em;
+        }
+
+        .results-count {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .warehouse-item {
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;            transition: all 0.3s;
+            background: #fafbfc;
+        }
+
+        .warehouse-item:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+            border-color: #1e3c72;
+        }
+
+        .warehouse-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .warehouse-code {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+        }
+
+        .warehouse-name {
+            font-size: 1.05em;
+            color: #333;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .warehouse-old-names {
+            color: #888;
+            font-size: 0.85em;
+            font-style: italic;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed #e0e0e0;
+        }
+
+        .warehouse-old-names strong {
+            color: #666;
+        }
+
+        .warehouse-actions {
+            display: flex;
+            gap: 8px;            margin-top: 12px;
+        }
+
+        .btn-edit {
+            background: #f39c12;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .btn-edit:active, .btn-delete:active {
+            transform: scale(0.95);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-content h2 {
+            color: #1e3c72;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-hint {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            flex: 1;
+            padding: 15px;
+            font-size: 15px;
+        }
+
+        .btn-cancel {
+            background: #95a5a6;
+            color: white;
+            flex: 1;
+            padding: 15px;
+            font-size: 15px;
+        }
+
+        .contact-info {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .contact-info h3 {
+            color: #1e3c72;            margin-bottom: 15px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-info p {
+            color: #555;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-info a {
+            color: #1e3c72;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 16px 28px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 2000;
+            font-weight: 600;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        .empty-state {            text-align: center;
+            padding: 60px 20px;
+            color: #888;
+        }
+
+        .empty-state .icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background: #1e3c72;
+            color: white;
+            border-color: #1e3c72;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+                padding-bottom: 80px;
+            }
+
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;            }
+
+            .warehouse-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .warehouse-actions {
+                flex-direction: column;
+            }
+
+            .stats {
+                padding: 15px;
+            }
+
+            .stat-number {
+                font-size: 1.8em;
+            }
+
+            .modal-content {
+                padding: 20px;
+                margin: 10px;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f0f0f0;
+            border-top-color: #1e3c72;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            z-index: 900;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.8em;
+            gap: 5px;
+            padding: 5px 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-item.active {
+            color: #1e3c72;
+            background: #f0f4f8;
+        }
+
+        .nav-item .icon {
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏭 Bodegas BSF Distrito Laguna Sur</h1>
+            <div class="subtitle">Sistema de Gestión de Bodegas</div>
+            <div class="creator-badge">
+                <span>👮🔐</span> Creado para los Guardias de Asper
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalWarehouses">0</div>
+                <div class="stat-label">Total Bodegas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="activeWarehouses">0</div>
+                <div class="stat-label">Activas</div>
+            </div>            <div class="stat-item">
+                <div class="stat-number" id="unknownWarehouses">0</div>
+                <div class="stat-label">Sin Identificar</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="lastUpdate">-</div>
+                <div class="stat-label">Última Act.</div>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Buscar por código, nombre o nombres anteriores...">
+            <div class="action-buttons">
+                <button class="btn btn-add" onclick="openAddModal()">➕ Agregar Bodega</button>
+                <button class="btn btn-export" onclick="exportData()">📥 Descargar Datos</button>
+                <button class="btn btn-import" onclick="document.getElementById('importFile').click()">📤 Importar</button>
+                <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterBy('all', this)">Todos</button>
+                <button class="filter-btn" onclick="filterBy('known', this)">Identificadas</button>
+                <button class="filter-btn" onclick="filterBy('unknown', this)">Sin Identificar</button>
+            </div>
+        </div>
+
+        <div class="warehouses-list">
+            <div class="list-header">
+                <h2>📦 Listado de Bodegas</h2>
+                <span class="results-count" id="resultsCount">0 bodegas</span>
+            </div>
+            <div id="warehousesList">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Cargando bodegas...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h3>📞 Información de Contacto</h3>
+            <p>📍 <strong>Dirección:</strong> Laguna Sur 9600, Pudahuel</p>
+            <p>📧 <strong>Email:</strong> <a href="mailto:controllagunasur@bsf.cl">controllagunasur@bsf.cl</a></p>
+            <p>🏢 <strong>Distrito:</strong> Laguna Sur - BSF</p>
+            <p>👮 <strong>Para:</strong> Guardias de Seguridad Asper</p>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active" onclick="showSection('list')">            <span class="icon">📦</span>
+            <span>Bodegas</span>
+        </a>
+        <a href="#" class="nav-item" onclick="openAddModal()">
+            <span class="icon">➕</span>
+            <span>Agregar</span>
+    </div>
+
+    <!-- Modal para Agregar/Editar -->
+    <div class="modal" id="warehouseModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Agregar Bodega</h2>
+            <form id="warehouseForm">
+                <div class="form-group">
+                    <label for="code">Código de Bodega *</label>
+                    <input type="text" id="code" required placeholder="Ej: A001, B100, K005">
+                    <div class="form-hint">Usa letras mayúsculas para el código</div>
+                </div>
+                <div class="form-group">
+                    <label for="name">Nombre de la Bodega *</label>
+                    <input type="text" id="name" required placeholder="Nombre de la empresa">
+                </div>
+                <div class="form-group">
+                    <label for="oldNames">Nombres Anteriores</label>
+                    <textarea id="oldNames" placeholder="Nombres anteriores (separados por //)"></textarea>
+                    <div class="form-hint">Separa múltiples nombres con //</div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-save">💾 Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notificación -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Datos completos del Excel
+        let warehouses = [
+            {code: "0CAS", name: "Sociedad De Alimentacion Casino Express S.A.", oldNames: ""},
+            {code: "A001", name: "Solow Limitada", oldNames: "Importadora River Richer Limitada"},
+            {code: "A002", name: "Doite International S.A.", oldNames: ""},
+            {code: "A003", name: "Importadora River Richer Limitada", oldNames: "Comercial Chujie Limitada"},            {code: "A004", name: "Softys Chile Spa", oldNames: "Articulos Deportivos Belsport S.A(igs)(ynk)"},
+            {code: "A005", name: "Softys Chile Spa", oldNames: "Sociedad Servicios Integrales L&S Spa (Desils)"},
+            {code: "A006", name: "Softys Chile Spa", oldNames: "Empresas La Polar S.A//Sociedad Servicios Integrales L&S Spa (Desils)"},
+            {code: "A007", name: "Importadora Y Exportadora IRM Limitada", oldNames: ""},
+            {code: "A008", name: "Softys Chile Spa", oldNames: "Sociedad Servicios Integrales L&S Spa (Junaeb)(Mineduc)(gama)"},
+            {code: "A009", name: "Valverde Norambuena Spa (Limonada)", oldNames: ""},
+            {code: "A010", name: "Tw Logistica Spa(Henkel)", oldNames: ""},
+            {code: "A011", name: "Bijou Chile Spa(Todo Moda)", oldNames: ""},
+            {code: "A013", name: "Comercial Kayser Limitada", oldNames: ""},
+            {code: "A014", name: "Automotores Gildemeister Spa", oldNames: ""},
+            {code: "A015", name: "Jeansblue Spa", oldNames: ""},
+            {code: "A016", name: "?", oldNames: "Redcode Spa (skechers)(eskechers)(esquechers)//Empresa De Correos De Chile (Fundación integra)"},
+            {code: "A017", name: "Asiabox Spa (novajus)(asia america)(navahus)(novahus)", oldNames: ""},
+            {code: "A018", name: "Asiabox Spa (novajus)(asia america)(navahus)(novahus)", oldNames: "Servicios Logistico DGA S.A."},
+            {code: "A019", name: "Urbano Chile Spa", oldNames: ""},
+            {code: "A020", name: "Know How Promociones S.a.", oldNames: "Servicios Logistico DGA S.A. (ultima Milla miya)(Mercado Libre)(Llego Cargo)"},
+            {code: "A021", name: "Urbano Chile Spa(Ge2)(G2)(Urban Express)", oldNames: ""},
+            {code: "AAAA", name: "Bodegas San Francisco Limitada", oldNames: ""},
+            {code: "ADM1", name: "Sociedad De Servicios E Inversiones Ltda", oldNames: ""},
+            {code: "ADM2", name: "Constructora Lo Aguirre Spa", oldNames: ""},
+            {code: "ADM3", name: "Inversiones Fenix Servicios Ltda", oldNames: ""},
+            {code: "B003", name: "Servicios Logistico DGA S.A. (ultima Milla miya)(Mercado Libre)(Llego Cargo)", oldNames: "Itsanet S.A.//Levi Strauss Chile Limitada"},
+            {code: "B011", name: "Bijou Chile Spa(Todo Moda)", oldNames: "Sociedad Servicios Integrales L&S Spa"},
+            {code: "B017", name: "Asiabox Spa", oldNames: ""},
+            {code: "B019", name: "ABCE Integral Logictic Spa", oldNames: ""},
+            {code: "B100", name: "Constructora Neoproyekt Limitada", oldNames: "Laboratorio Detaid S.A."},
+            {code: "B101", name: "Constructora Neoproyekt Limitada", oldNames: "Laboratorio Detaid S.A."},
+            {code: "B102", name: "Webe Spa", oldNames: "GP Conexiones Spa//Exportaciones Emanuel Spa"},
+            {code: "B103", name: "Webe Spa", oldNames: "Exportaciones Emanuel Spa"},
+            {code: "B104", name: "Webe Spa", oldNames: "Exportaciones Emanuel Spa"},
+            {code: "B105", name: "Total Access Spa", oldNames: "Hoppe Chile Spa"},
+            {code: "B106", name: "Total Access Spa", oldNames: ""},
+            {code: "B107", name: "TCT Spa", oldNames: ""},
+            {code: "B108", name: "?", oldNames: "TCT Spa."},
+            {code: "B109", name: "?", oldNames: "TCT Spa."},
+            {code: "B110", name: "Diseño Hormigon Spa", oldNames: ""},
+            {code: "B112", name: "Exportaciones Emanuel Spa", oldNames: "Tecnologia Automotriz Limpia S.A."},
+            {code: "B113", name: "Exportaciones Emanuel Spa", oldNames: "Tecnologia Automotriz Limpia S.A."},
+            {code: "B114", name: "Hites S.A.", oldNames: ""},
+            {code: "B116", name: "Hites S.A.", oldNames: ""},
+            {code: "B119", name: "Central De Restaurantes Aramark Ltda.", oldNames: ""},
+            {code: "B200", name: "Tuves S.A.", oldNames: "Laboratorio Detaid S.A."},
+            {code: "B201", name: "Tuves S.A.", oldNames: ""},
+            {code: "B202", name: "?", oldNames: "Laboratorio Detaid S.A."},
+            {code: "B205", name: "?", oldNames: "Tuves S.A."},
+            {code: "B209", name: "Kia Chile S.A.", oldNames: ""},
+            {code: "B213", name: "Construccion Y Desarrollo Inmobiliario Flash Spa", oldNames: "Fox One Limitada//Marsol S.A.//Scred Spa"},
+            {code: "B215", name: "Construccion Y Desarrollo Inmobiliario Flash Spa", oldNames: "Fox One Limitada//Marsol S.A.//Scred Spa"},
+            {code: "B217", name: "Importadora Y Exportadora Premier Ace Limitada", oldNames: ""},
+            {code: "B219", name: "?", oldNames: "Importadora Y Exportadora Premier Ace Limitada"},            {code: "B221", name: "Gecko Seguridad Limitada", oldNames: ""},
+            {code: "B223", name: "?", oldNames: "Gecko Seguridad Limitada"},
+            {code: "B225", name: "CDM Medical Ltda.", oldNames: ""},
+            {code: "B227", name: "Curshman & Wakefield Chile Negocios Inmobiliarios Ltda.", oldNames: ""},
+            {code: "B229", name: "?", oldNames: "Adventure Spa"},
+            {code: "B231", name: "Activos Chile Empresa De Servicios Transitorios Spa", oldNames: ""},
+            {code: "B233", name: "Autobahn S.a.", oldNames: "Importadora Latitud Sur Chile Spa//Total Access Spa"},
+            {code: "B235", name: "Sugandha Spa", oldNames: ""},
+            {code: "B237", name: "Marviv Spa", oldNames: ""},
+            {code: "B301", name: "Sociedad Nuevo Mundo Limitada", oldNames: "Comercial Bone Maquinarias Limitada"},
+            {code: "B303", name: "Sociedad Nuevo Mundo Limitada", oldNames: ""},
+            {code: "B305", name: "Sugandha Spa", oldNames: ""},
+            {code: "B309", name: "Importadora Kopack Limitada(garden box)", oldNames: ""},
+            {code: "B312", name: "Construccion Y Desarrollo Inmobiliario Flash Spa", oldNames: "Fox One Limitada//Marsol S.A.//Scred Spa"},
+            {code: "B313", name: "Globalbusiness Spa", oldNames: ""},
+            {code: "B314", name: "Construccion Y Desarrollo Inmobiliario Flash Spa", oldNames: "Fox One Limitada//Marsol S.A.//Scred Spa"},
+            {code: "B316", name: "?", oldNames: "Importadora Y Exportadora Premier Ace Limitada"},
+            {code: "B317", name: "American Italia Spa", oldNames: ""},
+            {code: "B318", name: "?", oldNames: "Importadora Y Exportadora Premier Ace Limitada"},
+            {code: "B321", name: "Inversiones Aereas Patagonia Limitada", oldNames: "Transportes Nicolas Esteban Quitral Leon Eirl"},
+            {code: "B323", name: "Inversiones Aereas Patagonia Limitada", oldNames: "Transportes Nicolas Esteban Quitral Leon Eirl"},
+            {code: "B325", name: "Comercial Casino Max Ltda", oldNames: ""},
+            {code: "B326", name: "?", oldNames: "Cushman & Wakefield Chile Negocios Inmobiliarios Ltda."},
+            {code: "B328", name: "Comercial Globtek Ltda.", oldNames: ""},
+            {code: "B329", name: "Gestion Recuperación Y Reciclaje Lionel Rodriguez Aravena E.I.R.", oldNames: ""},
+            {code: "B330", name: "Ingecamtec Spa.", oldNames: ""},
+            {code: "B331", name: "Maria Paula Gracia Serrano", oldNames: ""},
+            {code: "B332", name: "?", oldNames: "Beespeed Spa//Tempel Chile Spa"},
+            {code: "B333", name: "Marviv Spa", oldNames: "TDI Logistics Spa"},
+            {code: "B335", name: "Ingecamtec Spa.", oldNames: ""},
+            {code: "B336", name: "Sociedad De Servicios Ingserv Solutions Ltda", oldNames: ""},
+            {code: "B337", name: "Administradora Bralon Ltda", oldNames: ""},
+            {code: "B339", name: "Fundacion Desafio Levantemos Chile", oldNames: ""},
+            {code: "B341", name: "Marviv Spa", oldNames: "Fox One Limitada//Marsol S.A.//Scred Spa"},
+            {code: "B400", name: "Sociedad Nuevo Mundo Limitada", oldNames: "Comercial Bone Maquinarias Limitada"},
+            {code: "B401", name: "C&G Ingenieria Y Construcciones Spa", oldNames: ""},
+            {code: "B402", name: "Sociedad Nuevo Mundo Limitada", oldNames: ""},
+            {code: "B405", name: "Latamfit Chile Spa", oldNames: ""},
+            {code: "B407", name: "?", oldNames: "Latamfit Chile Spa"},
+            {code: "B409", name: "Bohuon Y Rolland S.a.", oldNames: ""},
+            {code: "B412", name: "Abastible S.a.", oldNames: "Multiservicios Y Ventas Ramirez// Beespeed Spa"},
+            {code: "B413", name: "Comercializadora Dkora2 Spa.(decorados)", oldNames: "Bijou Chile Spa"},
+            {code: "B414", name: "Abastible S.a.", oldNames: "Multiservicios Y Ventas Ramirez Spa//Beespeed Spa"},
+            {code: "B415", name: "Comercializadora Dkora2 Spa.(decorados)", oldNames: "Bijou Chile Spa"},
+            {code: "B416", name: "Farenhouse Energy Group S.a.", oldNames: ""},
+            {code: "B417", name: "Construccion Y Desarrollo Inmobiliario Flash Spa", oldNames: ""},
+            {code: "B419", name: "?", oldNames: "Construccion Y Desarrollo Inmobiliario Flash Spa"},
+            {code: "B420", name: "Banco Ripley", oldNames: ""},
+            {code: "B421", name: "Hiossen Chile Spa", oldNames: "Scred Spa"},
+            {code: "B423", name: "?", oldNames: "Scred Spa//Hiossen Chile Spa"},            {code: "B424", name: "Nail Art Store Spa", oldNames: "C&G Ingenieria Y Construcciones Spa"},
+            {code: "B425", name: "Exportaciones Emanuel Spa", oldNames: ""},
+            {code: "B426", name: "?", oldNames: "C&G Ingenieria Y Construcciones Spa//Nail Art Store Spa"},
+            {code: "B428", name: "Sociedad Recuperadora Y Elaboradora Recicop Spa", oldNames: ""},
+            {code: "B429", name: "Monsalve Y Gatica Spa", oldNames: "ADM De Recursos Humanos Y Promociones Sertus Limitada//Globe S.a"},
+            {code: "B430", name: "Comercializadora E Inversiones Kave Chile Spa", oldNames: ""},
+            {code: "B431", name: "Monsalve Y Gatica Spa", oldNames: "ADM De Recursos Humanos Y Promociones Sertus Limitada//Globe S.a"},
+            {code: "B432", name: "Aquibarato Spa", oldNames: "Beespeed Spa//De Integra Service Spa"},
+            {code: "B433", name: "Sociedad Recuperadora Y Elaboradora Recicop Spa", oldNames: "Sociedad Comercial Lopez Henriquez Limitada"},
+            {code: "B434", name: "Distribuidora RFC Spa", oldNames: "Servicios Logisticos DGA S.a."},
+            {code: "B435", name: "Controles Limitada", oldNames: ""},
+            {code: "B436", name: "FyG Sevice Spa", oldNames: "Fitness Lux Spa"},
+            {code: "B437", name: "Impresos Lahosa S.a.", oldNames: ""},
+            {code: "B438", name: "Diseños Y Proyectos S.a.", oldNames: "Procim Spa"},
+            {code: "B439", name: "Grupo PH Spa", oldNames: "Marviv Spa"},
+            {code: "B441", name: "Asesorias Servicios Y Soluciones Ambientales Sox Spa.", oldNames: "Transportes Nicolas Esteban Quitral Leon Eirl (Moova)"},
+            {code: "B443", name: "Soc. Recuperadora E Inv. RG Spa", oldNames: "Comercial Kammel Ltda."},
+            {code: "B500", name: "Fundacion Desafio Levantemos Chile", oldNames: ""},
+            {code: "B501", name: "World Foods Spa", oldNames: "Sociedad Educacional Cursos Y Seminarios EMB//Editora Microbyte Ltda"},
+            {code: "B503", name: "The Klan Company Producciones Spa", oldNames: "Compañia De Seguros Confuturo S.a.//C&G Ingenieria Y Construcciones Spa"},
+            {code: "B504", name: "Opticas Rotter Y Krauss Limitada.(Gran vision)(Granvision)", oldNames: ""},
+            {code: "B505", name: "Exportaciones Emanuel Spa", oldNames: "Opticas Grandvision Chile Ltda.//Opticas Rotter Y Krauss Limitada."},
+            {code: "B506", name: "?", oldNames: "Opticas Grandvision Chile Ltda.//Opticas Rotter Y Krauss Limitada."},
+            {code: "B507", name: "Opticas Rotter Y Krauss Limitada.", oldNames: ""},
+            {code: "B508", name: "?", oldNames: "Bohuon Y Rolland S.a."},
+            {code: "B509", name: "Casinos Chile S.a.", oldNames: ""},
+            {code: "B512", name: "Comercializadora Dkora2 Spa", oldNames: ""},
+            {code: "B513", name: "Soc. Recuperadora E Inv. RG Spa", oldNames: "Comercial Kammel Ltda."},
+            {code: "B514", name: "Comercializadora Dkora2 Spa.(decorados)", oldNames: ""},
+            {code: "B515", name: "Latamfit Chile Spa", oldNames: ""},
+            {code: "B516", name: "Grupo PH Spa", oldNames: "Proveedores Mineros Varios Spa"},
+            {code: "B517", name: "Auditron Chile S.a.", oldNames: ""},
+            {code: "B518", name: "?", oldNames: "Proveedores Mineros Varios Spa//Grupo PH Spa"},
+            {code: "B519", name: "Came Parkare Chile Spa", oldNames: "Grupo PH Spa"},
+            {code: "B520", name: "Goran Group Comunicaciones Spa", oldNames: ""},
+            {code: "B521", name: "Chupilca Spa", oldNames: "Importadora Y Exportadora Premier Ace Limitada"},
+            {code: "B523", name: "C&C Elevators Limitada", oldNames: ""},
+            {code: "B524", name: "Globalbusiness Spa", oldNames: ""},
+            {code: "B525", name: "Comercializadora Guo Y Yu Limitada", oldNames: "Restaurant Drangon Chino//Weidong guo Eirl"},
+            {code: "B527", name: "?", oldNames: "Restaurant Drangon Chino//Weidong guo Eirl//Comercializadora Guo Y Yu Limitada"},
+            {code: "B528", name: "Seguros De Vida Sura S.a.", oldNames: ""},
+            {code: "B529", name: "Femacc Spa", oldNames: "Inversiones OMV S.a.//Idemia Identity & Security Chile"},
+            {code: "B530", name: "?", oldNames: "Seguros De Vida Sura S.a."},
+            {code: "B531", name: "?", oldNames: "Inversiones OMV S.a.//Idemia Identity & Security Chile//Femacc Spa"},
+            {code: "B532", name: "Controles Limitada", oldNames: ""},
+            {code: "B533", name: "?", oldNames: "Sociedad De Inversiones Sun Merchand Spa"},
+            {code: "B534", name: "Latamfit Chile Spa", oldNames: ""},
+            {code: "B535", name: "Sociedad De Inversiones Sun Merchand Spa", oldNames: ""},
+            {code: "B536", name: "Soc. Recuperadora E Inv. RG Spa", oldNames: ""},
+            {code: "B537", name: "Seguros De Vida Sura S.a.", oldNames: ""},            {code: "B538", name: "Software Andino Limitada", oldNames: ""},
+            {code: "B539", name: "?", oldNames: "Seguros De Vida Sura S.a."},
+            {code: "B540", name: "CSG Logistica Express Ltda.", oldNames: ""},
+            {code: "B541", name: "D&S Logistica Internacional Spa", oldNames: "Comercializadora Y Representaciones Silbertec S.a//Molina E Hijos Limitada.//Gp Conexiones Spa"},
+            {code: "B542", name: "Soc. Recuperadora E Inv. RG Spa", oldNames: "Producciones Legrand Limitada//Comercializadora Y Representaciones Silbertec S.a//Comercializadora Y Distribuidora Luis Jara Y Compañia Spa//Noisy Spa//Iberica De Mantenimiento S.a. Agencia En Chile"},
+            {code: "B543", name: "Thermotecnia Limitada", oldNames: ""},
+            {code: "B545", name: "Inversiones Arca Spa", oldNames: "Europellet Limitada"},
+            {code: "B547", name: "Sociedad Comercial Mora Y Orellana Ltda.", oldNames: ""},
+            {code: "B549", name: "Euroglobal Chile E.I.R.L.", oldNames: ""},
+            {code: "B551", name: "Latamfit Chile Spa", oldNames: ""},
+            {code: "B553", name: "Infor Ingen Computacion Limitada", oldNames: ""},
+            {code: "B555", name: "Punto Sport Chile Spa", oldNames: "Importadora Algarrobo Spa"},
+            {code: "B557", name: "?", oldNames: "Importadora Algarrobo Spa//Punto Sport Chile Spa"},
+            {code: "B559", name: "Comercializadora Gamerpro Limitada", oldNames: ""},
+            {code: "B561", name: "?", oldNames: "Comercializadora Gamerpro Limitada"},
+            {code: "B563", name: "MYE Clima Spa", oldNames: ""},
+            {code: "B565", name: "Marviv Spa", oldNames: "Laboratorio Dentaid S.a.//Empresa De Ingenieria Y Comunicaciones Globaldata S.a.//Importadora y Comercializadora Brown S.a"},
+            {code: "B567", name: "Marviv Spa", oldNames: "Laboratorio Dentaid S.a.//Empresa De Ingenieria Y Comunicaciones Globaldata S.a.//Importadora y Comercializadora Brown S.a"},
+            {code: "B569", name: "Punto Sport Chile Spa", oldNames: "MTZ Inversiones Spa"},
+            {code: "B571", name: "Pullman Cargo S.a", oldNames: ""},
+            {code: "C001", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "C002", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "C003", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "C004", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "C005", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "C006", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "C007", name: "Comercial Los Galgos S.a. (casa blanca)(epson)", oldNames: ""},
+            {code: "C008", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "C009", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "C09B", name: "Transportes Yañez Ltda (Trans Limp)(mercado libre)", oldNames: ""},
+            {code: "C010", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "CAS1", name: "Sociedad De Alimentacion Casino Express S.a(ymir)(imir)", oldNames: ""},
+            {code: "CAS2", name: "Sociedad De Alimentacion Casino Express S.a", oldNames: ""},
+            {code: "CDEP", name: "Felipe Segundo Nuñez Saintis", oldNames: ""},
+            {code: "CDLS", name: "Bodegas San Francisco Limitada", oldNames: ""},
+            {code: "D001", name: "Transporte Y Logistica Musan Limitada.", oldNames: ""},
+            {code: "D003", name: "Diseños Y Proyectos S.a.", oldNames: "Sociedad Ingenieria Electrica Y Servicios Villa Claro Spa.//Construcciones Y Servicios Natala Spa"},
+            {code: "D005", name: "Comercial De La Fuente Chile Spa", oldNames: "Blascool Retail Spa//Importadora Y Exportadora H. J. Ltda"},
+            {code: "D007", name: "Music Hall Chile", oldNames: ""},
+            {code: "D009", name: "Comercializadora O Briones Y Cia Limitada (comercial rapac rapak)", oldNames: ""},
+            {code: "E001", name: "Alitrade Spa (elitrade)(Fire Trade)", oldNames: ""},
+            {code: "E002", name: "Transporte Y Logistica Musan Limitada.", oldNames: ""},
+            {code: "E004", name: "Finning Chile S.a", oldNames: "Comercializadora Cottonext Limitada.//Mediplex S.a."},
+            {code: "E005", name: "Comercializadora E Importadora Diamac Spa", oldNames: "Santiago Remate SPA (Diamac)"},
+            {code: "E006", name: "Inversiones Baloval Ltda.", oldNames: ""},
+            {code: "E007", name: "Odh Outlet Del Hogar Spa", oldNames: "Microblend Chile Spa"},
+            {code: "E008", name: "Transportes Nicolas Esteban Quitral Leon Eirl", oldNames: "Know How Promociones S.a."},
+            {code: "E009", name: "?", oldNames: "Sociedad Comercial C Y C Los Amigos Spa."},
+            {code: "E010", name: "LH Spa (Pilas PanaSony)", oldNames: "Inversiones Polonia S.a."},
+            {code: "E011", name: "Construcciones Y Pavimentos Spa", oldNames: "Sociedad Comercial C Y C Los Amigos Spa//Geom Spa"},            {code: "E012", name: "Intramedical Chile Spa", oldNames: ""},
+            {code: "E013", name: "Jowat Chile Spa", oldNames: ""},
+            {code: "E014", name: "Roman Y De Col Y Compañía Limitada", oldNames: "Mediplex S.a."},
+            {code: "E015", name: "Comercial Frese Limitada", oldNames: "Importadora Todomoto Spa"},
+            {code: "E017", name: "Altak Spa", oldNames: "Importadora Todomoto Spa"},
+            {code: "E019", name: "Altak Spa", oldNames: ""},
+            {code: "E021", name: "Ferrobal Limitada.", oldNames: "Comercial Kaltemp S.a. (Decapac)"},
+            {code: "ESTA", name: "Karsharing Spa", oldNames: ""},
+            {code: "F001", name: "Comerguz Ltda. (Bendita Bodega)", oldNames: "Comercial Frese Limitada"},
+            {code: "F002", name: "Alitrade Spa", oldNames: ""},
+            {code: "F003", name: "Inversiones Baloval Ltda.", oldNames: ""},
+            {code: "F004", name: "?", oldNames: "Alitrade Spa"},
+            {code: "F005", name: "Euroglobal Chile E.i.r.l (american life)", oldNames: ""},
+            {code: "F006", name: "Jerman Vega Mulbayer", oldNames: ""},
+            {code: "F007", name: "Jerman Vega Mulbayer", oldNames: ""},
+            {code: "F008", name: "Odh Outlet Del Hogar Spa", oldNames: "Microblend Chile Spa"},
+            {code: "F009", name: "Servicios Logisticos DGA S.a.", oldNames: "Asiabox Spa"},
+            {code: "F010", name: "?", oldNames: "Sociedad Comercial C Y C Los Amigos Spa(ACN distribución)"},
+            {code: "F011", name: "Servicios Logisticos DGA S.a.", oldNames: "Asiabox Spa"},
+            {code: "F012", name: "Empresa De Proyectos Y Gestion Endurance S.a.", oldNames: ""},
+            {code: "F013", name: "Servicios Logisticos DGA S.a.", oldNames: "Asiabox Spa"},
+            {code: "F014", name: "Tuves S.a.", oldNames: "Biotec Chile S.a."},
+            {code: "F015", name: "Empresa De Proyectos Y Gestion Endurance S.a.", oldNames: ""},
+            {code: "F016", name: "Tuves S.a.", oldNames: ""},
+            {code: "F017", name: "Empresa De Proyectos Y Gestion Endurance S.a. (New Horizons - Nh/technology spa)", oldNames: ""},
+            {code: "F018", name: "Fcom Spa (Ricoh)", oldNames: "Importadora Y Exportadora Li Compañia Limitada//You Order Me Spa (you mercado)"},
+            {code: "F020", name: "?", oldNames: "Importadora Y Exportadora Li Compañia Limitada//You Order Me Spa (you mercado)"},
+            {code: "F021", name: "Sur De Chile Textiles Ltda.", oldNames: ""},
+            {code: "F022", name: "GMF Logistica Integral Spa", oldNames: "Comerguz Ltda. (Bendita Bodega)"},
+            {code: "F024", name: "GMF Logistica Integral Spa", oldNames: "Comerguz Ltda. (Bendita Bodega)"},
+            {code: "F025", name: "Comercial Holzer Spa(Mega Juegos)", oldNames: ""},
+            {code: "F029", name: "Inversiones Polonia S.a. (tick Office)", oldNames: ""},
+            {code: "F031", name: "Protab Spa", oldNames: ""},
+            {code: "F033", name: "Restaurant Dragon Chino, Weidong Gou EIRL.", oldNames: "Altak Spa//Comercial Shoot Chile Spa"},
+            {code: "F035", name: "Transportes GYG Ltda. (hidroTecnica)(leuchtend spa)", oldNames: ""},
+            {code: "F037", name: "Daysi Valdenegro Manriquez.", oldNames: "Stryker Corp Chile Y Cia Ltda.//Fcom Spa (Ricoh)"},
+            {code: "F039", name: "Specflow Spa.", oldNames: ""},
+            {code: "G002", name: "Andes Retail Spa", oldNames: ""},
+            {code: "G003", name: "?", oldNames: "Logistic Plus Spa.//Autorrenta Aspen S.a.(flender spa)"},
+            {code: "G004", name: "Sociedad De Inversiones Sun Merchand Spa", oldNames: ""},
+            {code: "G005", name: "?", oldNames: "Logistic Plus Spa.//Autorrenta Aspen S.a.(flender spa)"},
+            {code: "G006", name: "Punto Sport Chile Spa.", oldNames: "Amecological S.a. (Kosac)//Lstore Spa (outlet Del Maestro)(floor depot)(remodelatodo)(liderdec)"},
+            {code: "G007", name: "Flexi Chile Spa.", oldNames: "Vaxel Spa//GMF Logistica Integral Spa"},
+            {code: "G008", name: "Empresa Social De Comercializacion De Productos Spa", oldNames: ""},
+            {code: "G009", name: "Kraneo S.a.", oldNames: ""},
+            {code: "G010", name: "Comercializadora Y Distribuidora Luis Jara Y Compañia Spa (Piensa En Grande)", oldNames: ""},
+            {code: "G011", name: "Importadora Chininko Spa (Agraparts)", oldNames: "Cerpack E.i.r.l//Comercial Mamoca Spa."},
+            {code: "G012", name: "Comercializadora Y Distribuidora Luis Jara Y Compañia Spa (Piensa En Grande)", oldNames: "Chilexpo Spa"},
+            {code: "G016", name: "?", oldNames: "Comercializadora Y Distribuidora Luis Jara Y Compañia Spa"},
+            {code: "G017", name: "VF Cargo Spa", oldNames: ""},            {code: "G018", name: "?", oldNames: "Chilexpo Spa (Chile Expo Spa)"},
+            {code: "G019", name: "Lstore Spa (outlet Del Maestro)(floor depot)(remodelatodo)(liberdec spa)(LyM)(smart ceramic)", oldNames: "Logistic Plus Spa."},
+            {code: "G020", name: "?", oldNames: ""},
+            {code: "G022", name: "Ferrobal Limitada.", oldNames: "Inversiones Pacifico Spa (aladino)(corralco)"},
+            {code: "G024", name: "Ferrobal Limitada.", oldNames: "Inversiones Pacifico Spa"},
+            {code: "G026", name: "Comercial Bepro Group Limitada (grupo expro)", oldNames: ""},
+            {code: "G028", name: "?", oldNames: "Comercial Bepro Group Limitada"},
+            {code: "G030", name: "Comercializadora Guo y Yu Limitada", oldNames: "Restaurant Drangon Chino, Weidong guo Eirl//Comercializadora Duo y Yu Limitada"},
+            {code: "G032", name: "?", oldNames: "Restaurant Drangon Chino, Weidong guo Eirl//Comercializadora Duo y Yu Limitada//Comercializadora Guo y Yu Limitada"},
+            {code: "G034", name: "Comercial Deport Ltda", oldNames: ""},
+            {code: "G036", name: "Distribuidora Y Botilleria Patricia Reyes Medel Ltda.", oldNames: ""},
+            {code: "G038", name: "Comercializadora Renzo Giordano Pastene Eirl (Recitech)(reciclaje de tecnología)", oldNames: ""},
+            {code: "G040", name: "Importadora Corralco Spa", oldNames: "Flexi Chile Spa//Importadora Y Comercializadora Consigna Spa//Masmedical Spa."},
+            {code: "GGSS", name: "Guardias De Seguridad", oldNames: ""},
+            {code: "H004", name: "Autorrenta Aspen S.a.(flender spa)(Siemens S.a.)", oldNames: ""},
+            {code: "H006", name: "Fcom Spa (Ricoh)", oldNames: "Mediplex S.a.//Penguin Random House Grupo Editorial S.a."},
+            {code: "H008", name: "Imp., Exp. Y Comec. Search S.a.", oldNames: ""},
+            {code: "H010", name: "Fcom Spa (Ricoh)", oldNames: ""},
+            {code: "H012", name: "Sociedad Comercializadora Mevel Limitada (comercializadora marcela bernedo trapp e) (alimentos gurmet)(maquilas san andres)", oldNames: ""},
+            {code: "H014", name: "Distribuidora Y Comercial Casanova E Hijos (casanova)(rapak)", oldNames: "Know How Promociones S.a. (Beiersdorf S.a.)"},
+            {code: "H016", name: "Distribuidora Y Comercial Casanova E Hijos (casanova)(rapak)", oldNames: "Inmobiliaria Y Transporte Astorga Olmos Spa"},
+            {code: "H018", name: "?", oldNames: "Penguin Random House Grupo Editorial S.a."},
+            {code: "H020", name: "Agrocomercial Safratec Chile Ltda.", oldNames: ""},
+            {code: "J002", name: "Levi Strauss Chile Limitada", oldNames: ""},
+            {code: "J004", name: "Levi Strauss Chile Limitada", oldNames: "Sodimac S.a.(ikea)"},
+            {code: "J006", name: "Pesquera Trans Antartic Ltda. (Robinson Crusoe)", oldNames: "Hipermercados Tottus S.a. (dimac)"},
+            {code: "J008", name: "Comercial Sportex Spa(everlas)(salamanka)(translimp)(Sporshop)", oldNames: ""},
+            {code: "J010", name: "Imperial S.a. (MTS)", oldNames: ""},
+            {code: "J017", name: "?", oldNames: "Transportes Supertrans Limitada. (ABC Logistic)(ABC integral)(Glitt Spa)"},
+            {code: "J018", name: "Empresa De Correos De Chile (Fundacion integra)", oldNames: "Puma Chile Spa (work force)(hellmann)//Cencosud Retail S.a."},
+            {code: "J020", name: "Importadora Y Exportadora Homestar Limitada", oldNames: ""},
+            {code: "J08A", name: "Feifan Chile Spa(Productos y Insumos PyT Spa)(RPN)", oldNames: ""},
+            {code: "K001", name: "Importadora Y Exportadora Keke Ltda", oldNames: ""},
+            {code: "K002", name: "Big Foot Chile Spa (dafiti)", oldNames: ""},
+            {code: "K003", name: "HGVTelecomunicaciones Ltda.", oldNames: ""},
+            {code: "K004", name: "Blue Express", oldNames: ""},
+            {code: "K005", name: "Comercial E inversiones Patagonia Spa (Faber Hermanos)(Javier Hermanos)(los andes)(Emilio Hananias E Hijos S.a.)(Mundo Hogar)", oldNames: "Transportes Eliecer Esteban Ponce Pezoa Eirl"},
+            {code: "K006", name: "Aplus", oldNames: "Big Foot Chile Spa (dafiti)"},
+            {code: "K008", name: "Transportes Juan Matta Pincheira Eirl.", oldNames: "Sociedad De Transportes Matta Spa"},
+            {code: "K011", name: "Ruiz Y Ruiz Transportes Y Logistica Integral Ltda. (aco)(ako)(Austral Max)(Fps)", oldNames: ""},
+            {code: "K013", name: "Ruiz Y Ruiz Transportes Y Logistica Integral Ltda. (aco)(ako)", oldNames: ""},
+            {code: "K015", name: "Rudolf Chile S.a.", oldNames: ""},
+            {code: "K017", name: "FYP Inversiones Spa. (Comercial Fernapet S.a.)", oldNames: ""},
+            {code: "K018", name: "RCL Sudamericana S.a.", oldNames: ""},
+            {code: "K020", name: "Comercial Mabe Chile Ltda. (Ega Kat Logística Spa)(cdc)", oldNames: ""},
+            {code: "K022", name: "Sociedad De Inversiones Don Coco Limitada(Symbols)(Simbols)(Comercial Santa Macarena)(mahou)(De Maria Spa)(Megalogistica)(Dulce Locura)", oldNames: "Blue Express S.a (Electrolux)"},
+            {code: "K105", name: "PuntoDeArriendo Spa (aderlog)", oldNames: ""},
+            {code: "K107", name: "Comercial Ugarte y Scott S.a. (Aceites)", oldNames: ""},
+            {code: "K109", name: "Sebastian Varas Valdes", oldNames: ""},
+            {code: "K111", name: "Distribuidora Y Comercial SG Spa (star global)", oldNames: ""},            {code: "K113", name: "Meredith Fueltec Limitada", oldNames: "Comercializadora Go-In Chile Limitada."},
+            {code: "K115", name: "Upgrade (Chile) En Liquidacion S.a.", oldNames: "Comercializadora Rovi Spa"},
+            {code: "K117", name: "Gdl & Rd Spa", oldNames: "Corworks Spa"},
+            {code: "K119", name: "Recicla-E Manejo Y Gestion De Residuos Electronicos Spa", oldNames: ""},
+            {code: "K201", name: "Concargo Ltda", oldNames: ""},
+            {code: "K202", name: "Maxi Equipos Soluciones Industriales Spa", oldNames: "Santa Ines Spa//Avant Servicios Integrales S.a.//Starken Spa"},
+            {code: "K203", name: "Importadora Y Exportadora Premier Ace Limitada", oldNames: ""},
+            {code: "K204", name: "Maxi Equipos Soluciones Industriales Spa", oldNames: "Avant Servicios Integrales S.a.//Starken Spa"},
+            {code: "K205", name: "PuntoDeArriendo Spa", oldNames: ""},
+            {code: "K206", name: "Importadora Y Exportadora Premier Ace Limitada", oldNames: ""},
+            {code: "K207", name: "Pitbull Sociedad Anonima", oldNames: "Safemaster S.a"},
+            {code: "K208", name: "Globe Express Services Chile Ltda", oldNames: ""},
+            {code: "K209", name: "Granos Y Alimentos Spa", oldNames: ""},
+            {code: "K210", name: "Soc. Recuperadora E Inv Rg Spa", oldNames: ""},
+            {code: "K211", name: "Concargo Ltda", oldNames: ""},
+            {code: "K212", name: "Termic Limitada", oldNames: ""},
+            {code: "K213", name: "Asesorias Operacionales De Comercio Exterior Y Log. I. Makarena K.", oldNames: ""},
+            {code: "K214", name: "Optima Ti Spa", oldNames: "Energiza Spa."},
+            {code: "K215", name: "Pointshoot Target Spa.", oldNames: "Importadora Matri Limitada//Logistica Bodegaje Y Transporte Kaltech Spa"},
+            {code: "K216", name: "Equipamientos Gastronomicos Alfa Spa.", oldNames: "Carlos Hernandez Caballero//Grupo Gid Limitada."},
+            {code: "K217", name: "Conservador De Bienes Raices De Santiago", oldNames: ""},
+            {code: "K218", name: "Galo Viguera E Hijos Ltda.", oldNames: "Logistic Plus Spa//Gp Conexiones Spa"},
+            {code: "K220", name: "Gefco Chile S.a.", oldNames: ""},
+            {code: "K301", name: "Comercial Luis Gabriel Hernandez Hernandez Eirl", oldNames: "Grupo Gid Limitada"},
+            {code: "K302", name: "Costa Pacifico Ltda", oldNames: ""},
+            {code: "K303", name: "Boutique VP Spa", oldNames: ""},
+            {code: "K304", name: "Inversiones Ahumada Spa", oldNames: "Comercial De La Fuente Chile Spa//Opticas GrandVision Chile Ltda.//Opticas Rotter Y Krauss Limitada."},
+            {code: "K305", name: "Maxi Equipos Soluciones Industriales Spa", oldNames: ""},
+            {code: "K306", name: "Sociedad Inversiones Sun Merchand Spa", oldNames: ""},
+            {code: "K307", name: "Comercializadora El Zafri", oldNames: ""},
+            {code: "K308", name: "3m Partes Spa", oldNames: ""},
+            {code: "K309", name: "?", oldNames: "HGVTelecomunicaciones Ltda."},
+            {code: "K310", name: "Iluminacion Y Paisaje Ltda.", oldNames: ""},
+            {code: "K311", name: "?", oldNames: "Comercializadora Renzo Giordano Pastene Eirl"},
+            {code: "K312", name: "Wpc Group Chile Spa", oldNames: "Tex & Telecom Importaciones Spa//Pal Logistics Spa//Pitbull Sociedad Anonima//Comercializadora E Importadora Diamac Spa"},
+            {code: "K313", name: "Energia Verde Spa", oldNames: "Thempus Express Spa//Bolsaplus Spa//Roman Y De Col Y Compañía Limitada"},
+            {code: "K314", name: "Comercial Crimson House Limitada", oldNames: ""},
+            {code: "K315", name: "Ibarra Barrios Esterilizacion Limitada", oldNames: "Comercial El Imperior Spa"},
+            {code: "K316", name: "Constructora Roble S.a.", oldNames: ""},
+            {code: "K317", name: "Kumelkan Ingenieria Y Servicio Spa", oldNames: "Fitness Lux Spa//Comercializadora La Aurora Limitada"},
+            {code: "K318", name: "Importadora Kopack Limitada", oldNames: ""},
+            {code: "K401", name: "Tremen Spa", oldNames: "Training Chile Servicios De Capacitacion Spa//Tremen Spa"},
+            {code: "K402", name: "Diseños Y Proyectos S.a.", oldNames: "Tremen Spa//Inversiones E Inmobiliaria Lanfra Spa//Importadora Roman Limitada"},
+            {code: "K403", name: "Ferreteria, Construccion, Reparacion Y Diseño Manuel Lastra Arjona Spa(Mojo Store)", oldNames: ""},
+            {code: "K404", name: "Nutrimento S.a.", oldNames: ""},
+            {code: "K405", name: "Importaciones Nordeco Spa", oldNames: "Logistica Kmc Spa"},
+            {code: "K406", name: "Nutrimento S.a.", oldNames: ""},
+            {code: "K407", name: "Comercializadora Y Contructora Guver Limitada.", oldNames: "Inversiones E Inmobiliaria Lanfra Spa"},
+            {code: "K408", name: "Equipamientos Gastronomicos Alfa Spa.", oldNames: "Inversiones E Inmobiliaria Lanfra Spa//Pisos Flotantes Nativo Spa"},
+            {code: "K409", name: "Grupo Importaciones Y Exportacion Spa (grupo pro)", oldNames: ""},            {code: "K410", name: "Constructora Roble S.a.", oldNames: ""},
+            {code: "K411", name: "Transportes Logistica Ingenieria Y Construccion Spa", oldNames: ""},
+            {code: "K412", name: "Comercial Crimson House Limitada", oldNames: ""},
+            {code: "K413", name: "Transformadores Tusan S.a.", oldNames: "Roman Y De Col Y Compañía Limitada"},
+            {code: "K414", name: "Importadora Y Exportadora Premier Ace Limitada", oldNames: ""},
+            {code: "K415", name: "Comercial Kaltemp S.a.", oldNames: "Roman Y De Col Y Compañía Limitada"},
+            {code: "K416", name: "Soc. Recuperadora E Inv Rg Spa", oldNames: "Importadora Y Distribuidora De Alimentos Mesonot Spa"},
+            {code: "K418", name: "Eficas Service Spa", oldNames: "Roman Y De Col Y Compañía Limitada"},
+            {code: "K501", name: "Cristian Perez Benitez.", oldNames: "Pullanque Spa"},
+            {code: "K502", name: "Stoma Spa", oldNames: ""},
+            {code: "K503", name: "Astrid Ximena Osses Camus", oldNames: "Dimaprint Chile Servicios Integrales Y Tecnologia Spa//Comercializadora Y Distribuidora Circe Spa//Iberica De Mantenimiento, S.A. Agencia En Chile.//Comercial Cargo Tank Spa"},
+            {code: "K504", name: "Subsecretaria Del Medio Ambiente", oldNames: ""},
+            {code: "K505", name: "Comercial Pastorino Limitada", oldNames: ""},
+            {code: "K506", name: "Comercializadora Go-In Chile Limitada", oldNames: "Hundshop Spa"},
+            {code: "K507", name: "Servicios Inversa Spa", oldNames: "Hector Alejandro Gonzalez Gonzalez Comercializadora EIRL"},
+            {code: "K508", name: "?", oldNames: "Distribuidora Das Limitada//D&S Logistica Internacional Spa"},
+            {code: "K509", name: "Comercializadora Go-In Chile Limitada", oldNames: "Transportes Bandelli Spa"},
+            {code: "K510", name: "Ropa Americana Mc Limitada.", oldNames: "Ropa Americana Mc Limitada"},
+            {code: "K511", name: "Fundacion Desafio Levantemos Chile", oldNames: ""},
+            {code: "K512", name: "Patricio Pichincura Muñoz", oldNames: ""},
+            {code: "K513", name: "Fundacion Desafio Levantemos Chile", oldNames: ""},
+            {code: "K514", name: "Sociedad Comercializadora Promather S.a.", oldNames: "Wontech Drilling Tool Spa//Scred"},
+            {code: "K515", name: "Cristobal Silberberg Cargill", oldNames: ""},
+            {code: "K516", name: "Latamfit Chile Spa", oldNames: ""},
+            {code: "K517", name: "Laboratorios Andromacos S.a.", oldNames: ""},
+            {code: "K519", name: "Comercializadora ChileTransferpro Spa", oldNames: "Comercializadora MEB Spa"},
+            {code: "K521", name: "Muebles Nor Moveis Limitada", oldNames: ""},
+            {code: "K601", name: "Transportes Primos Lucero Spa.", oldNames: "Comercializadora Indicom Ltda//Comercializadora Hopper Spa"},
+            {code: "K602", name: "Alejandro Ortega De La Fuente", oldNames: ""},
+            {code: "K603", name: "Comercializadoradora Encalada E Hijos Spa", oldNames: ""},
+            {code: "K604", name: "Transportes Primos Lucero Spa.", oldNames: "Pal Logistics Spa"},
+            {code: "K605", name: "Grupo Gid Limitada", oldNames: ""},
+            {code: "K606", name: "Auditron Chile S.a.", oldNames: "Araya Y Compañia Abogados S.a"},
+            {code: "K607", name: "Ingenieros Emetres S.a.", oldNames: ""},
+            {code: "K608", name: "Europellet Limitada", oldNames: "Sociedad De Servicios Ingserv Solutions Ltda."},
+            {code: "K609", name: "Consultores De Empresas De Servicios Transitorios Spa.(RPN)", oldNames: "Mia's Spa (Mias)"},
+            {code: "K610", name: "Home Tool And Industrial Machine Tapia Parra Limitada", oldNames: "Asesorias E Inversiones Comunidades Ciudadanas SA"},
+            {code: "K611", name: "Home Tool And Industrial Machine Tapia Parra Limitada", oldNames: "Home Tool Limitada"},
+            {code: "K612", name: "Ingenieria Ikusi Chile Limitada", oldNames: ""},
+            {code: "K613", name: "Tecnologia Automotriz Limpia S.a.", oldNames: "Home Tool And Industrial Machine Tapia Parra Limitada"},
+            {code: "K614", name: "El Aire Spa", oldNames: "Comercial Y Asesora Oro Verde Spa"},
+            {code: "K615", name: "ADP Repuestos Spa", oldNames: "Isi Store Spa"},
+            {code: "K616", name: "Servicios Inversa Spa", oldNames: "Jose Antonio Varas Valdes"},
+            {code: "K617", name: "Construcciones Y Mantenciones EM Spa.", oldNames: "Quatro Servicios Y Tecnologia Spa//Dropshop Marketing Y Logistica Spa//Construccion Y Desarrollo Inmobiliario Flash Spa"},
+            {code: "K618", name: "Comercial Ugarte Y Scott S.a..", oldNames: "Andes Retail Spa"},
+            {code: "K619", name: "Comercial Pastorino Limitada", oldNames: ""},
+            {code: "K620", name: "Contructora Ecso Limitada", oldNames: ""},
+            {code: "K621", name: "Servicios De Mantenimiento Integral Hidroservitec Ltda", oldNames: ""},
+            {code: "K622", name: "Sociedad Comercial C Y C Los Amigos Spa(ACN distribución)", oldNames: "Diamond Tools Spa"},
+            {code: "K702", name: "Sistemas Hiperbaricos Garcia Y Garcia Limitada", oldNames: ""},            {code: "K704", name: "Inversiones Los Cercos Limitada", oldNames: ""},
+            {code: "K706", name: "Centigrados Spa", oldNames: "Robur Chile Spa"},
+            {code: "K708", name: "Experiencia Monoi S.a.", oldNames: ""},
+            {code: "K710", name: "Boston Metals Herramientas Y Equipos Spa", oldNames: ""},
+            {code: "K712", name: "Sky Net Solutions Spa", oldNames: "Importadora Fincas Del Mundo Spa//Training Chile Servicios De Capacitacion Spa"},
+            {code: "K714", name: "Arriagada Ingenieria Y Construcion Spa", oldNames: ""},
+            {code: "K716", name: "Fundacion Debra Chile, Niños Piel De Cristal", oldNames: ""},
+            {code: "K718", name: "Sodil Chile Spa.", oldNames: ""},
+            {code: "K720", name: "Sociedad Comercial Rokris Spa", oldNames: ""},
+            {code: "K722", name: "Importadora Fincas Del Mundo Spa", oldNames: ""},
+            {code: "Kio1", name: "Comer. Maria Paz Benavente Covarrubias E.i.r.l", oldNames: ""},
+            {code: "Kio2", name: "Comer. Maria Paz Benavente Covarrubias E.i.r.l", oldNames: ""},
+            {code: "Kio3", name: "Lucy Gonzalez Arancibia", oldNames: ""},
+            {code: "L002", name: "FYP Inversiones Spa, Comercial Fernapet S.a.", oldNames: ""},
+            {code: "L003", name: "FYP Inversiones Spa", oldNames: ""},
+            {code: "L004", name: "FYP Inversiones Spa", oldNames: ""},
+            {code: "L005", name: "FYP Inversiones Spa", oldNames: ""},
+            {code: "L006", name: "Behnke Spa (Benke)", oldNames: ""},
+            {code: "L007", name: "Upgrade (Chile) En Liquidacion S.a.", oldNames: ""},
+            {code: "L009", name: "Comercial El Salto Spa", oldNames: "Santiago Alberto Pino Rojas"},
+            {code: "L010", name: "Importadora Y Exportadora Cisne Dorado Limitada", oldNames: "Inversiones Wiles Limitada"},
+            {code: "L01A", name: "ODH Outlet Del Hogar Spa", oldNames: ""},
+            {code: "L01B", name: "ODH Outlet Del Hogar Spa", oldNames: ""},
+            {code: "L04A", name: "?", oldNames: "Grupo Gaillard Spa (tick office)"},
+            {code: "L05A", name: "Daysi Valdenegro Manriquez. (Trebol)", oldNames: ""},
+            {code: "L05B", name: "Comercializadora O Briones Y Cia Limitada", oldNames: ""},
+            {code: "LAPP", name: "Luft Servicios Automotrices Spa.", oldNames: ""},
+            {code: "Obra", name: "Constructora Lo Aguirre Spa.", oldNames: ""},
+            {code: "Gext", name: "Bodegas San Francisco Limitada", oldNames: ""},
+            {code: "Pall", name: "Comercializadora Punto Pallets Limitada", oldNames: ""},
+            {code: "Phor", name: "Inversiones Mel 20 Ltda.", oldNames: ""},
+            {code: "Poz1", name: "Jose Miguel Barros Fontannaz", oldNames: ""},
+            {code: "Poz2", name: "Bodegas San Francisco Limitada", oldNames: ""},
+            {code: "Pp01", name: "Servicios Logistico DGA S.a.", oldNames: ""},
+            {code: "Serv", name: "Comercial Agurto Limitada(enex)", oldNames: ""},
+            {code: "Tec1", name: "Ingenieria Y Networking Ingenet Spa", oldNames: ""},
+            {code: "X001", name: "Sociedad Comercial Marben Pets Limitada (pets home)(pet home)(fatom)(Braloy braloi)", oldNames: ""},
+            {code: "X002", name: "San Luis", oldNames: "Musan"},
+            {code: "X003", name: "Veterinaria Internacional Spa", oldNames: "Logistic Plus Spa//La Oferta Comercial Limitada//Comercial Porvenir Spa.(braloi)"},
+            {code: "X004", name: "Importacion Y Venta De Teconologia Spa.", oldNames: "Comercial Araya Sociedad Limitada"},
+            {code: "X005", name: "Comercial Kaltemp S.a.", oldNames: "Rincon Didactico Limitada"},
+            {code: "X006", name: "Importadora Y Distribuidora Smart Limitada (Smartcom)(smart com)(brit box)(all clean)", oldNames: ""},
+            {code: "X007", name: "Easy Retail S.a.", oldNames: ""},
+            {code: "X008", name: "Importadora Y Distribuidora Smart Limitada (Smartcom)(smart com)(brit box)(all clean)", oldNames: ""},
+            {code: "X009", name: "Comercializadora Ambiente Ltda. (Wenco)", oldNames: ""},
+            {code: "X010", name: "INCENDIO, Logistic Plus Spa", oldNames: "Logistic Plus Spa"},
+            {code: "Y001", name: "INCENDIO, Mediplex S.a.", oldNames: "Mediplex S.a."},
+            {code: "Y002", name: "Instituto Nacional De Estadisticas", oldNames: ""},
+            {code: "Y003", name: "INCENDIO Daysi Valdenegro Manriquez.", oldNames: "Comercializadora Y Distribuidora Luis Jara y Compania Spa"},
+            {code: "Y005", name: "Iluminacion Y Paisaje Ltda (urban play)", oldNames: ""},            {code: "Y006", name: "Aela Eolica Sarco Spa", oldNames: ""},
+            {code: "Y007", name: "Importadora Y Distribuidora Chile Lubricantes Ltda.", oldNames: "Hites S.a.//Importadora Y Exportadora Merk Asia Limitada"},
+            {code: "Y008", name: "Construcciones Y Servicios Natala Spa.", oldNames: "Fox One Limitada(contructora e inmobiliaria serimod ltda)//Noisy Spa//Comercial De La Fuente Chile Spa"},
+            {code: "Y009", name: "Importadora Y Distribuidora Chile Lubricantes Ltda.", oldNames: "Hites S.a.//Importadora Y Exportadora Merk Asia Limitada//Importadora Y Distribuidora Chile Lubricantes Ltda."},
+            {code: "Y010", name: "Comercializadora Christian Esteban Norambuena Salazar Eirl", oldNames: ""},
+            {code: "Y011", name: "Construcciones Y Pavimentos Spa", oldNames: ""},
+            {code: "Y012", name: "Comercializadora Christian Esteban Norambuena Salazar Eirl", oldNames: "Comercializadora Christian Esteban Norambuena Salazar Eirl"},
+            {code: "Y013", name: "INCENDIO, Flexi Chile Spa", oldNames: ""},
+            {code: "Y014", name: "Adel Generacion Limitada", oldNames: ""},
+            {code: "Y015", name: "INCENDIO, Flexi Chile Spa", oldNames: ""},
+            {code: "Y016", name: "Kv Spa", oldNames: "Lisboa Y Tondo Spa"},
+            {code: "Y017", name: "Wines And Co. Spa", oldNames: "Transportes Nicolas Esteban Quitral Leon Eirl"},
+            {code: "Y018", name: "Sp Soluciones Plasticas Ltda.", oldNames: "Flexi Chile Spa//Logistica BYR Limitada//Comercial De La Fuente Chile Spa//Todova Spa (shasqui)(chasqui)(chaski)(shaski)"},
+            {code: "Y019", name: "Belltech Autoservicios S.a.", oldNames: ""},
+            {code: "Y020", name: "Servicio De Transporte, Almacenamiento Y Logistica Setal Spa", oldNames: ""},
+            {code: "Y021", name: "INCENDIO, Importadora Y Distribuidora Chile Lubricantes Ltda. (Lup Chile)(lum chile)", oldNames: "Importadora Y Distribuidora Chile Lubricantes Ltda. (Lup Chile)(lum chile)"},
+            {code: "Y022", name: "Logistica Cabj Spa (Minitub Chile)", oldNames: ""},
+            {code: "Y023", name: "INCENDIO, Importadora Y Distribuidora Chile Lubricantes Ltda.", oldNames: "Importadora Y Distribuidora Chile Lubricantes Ltda."},
+            {code: "Y024", name: "Sp Soluciones Plasticas Ltda. (consorcio Spa) (cicsa cicza)(sipza sipsa)(cipza cipsa) (sixa)(cixa)(Soluciones Sanitarias)(Verdejo)", oldNames: ""},
+            {code: "Y026", name: "Sp Soluciones Plasticas Ltda.", oldNames: ""},
+            {code: "Y028", name: "Colorvial Chile Ltda", oldNames: ""},
+            {code: "Z001", name: "Logistic Plus Spa", oldNames: ""},
+            {code: "Z002", name: "Jowat Chile Spa", oldNames: "Masmedical Spa//Noisy Spa"},
+            {code: "Z003", name: "?", oldNames: "Logistic Plus Spa"},
+            {code: "Z004", name: "Logistic Plus Spa", oldNames: ""},
+            {code: "Z005", name: "Inmuebles Cataluña Limitada (angel mo)(urban play)", oldNames: ""},
+            {code: "Z006", name: "Logistic Plus Spa (fokus) (tokstock)(Skava)(wild Foods Spa)(cemax)(cemac)(sikeri)(Electro ventas)(bostic)(com quimica masso chile spa)(CNP spa)(reinero)(reinero wines export)(ev eb)(alta mar)(travel box)(inversiones AB Spa)(Trans warren)(Transportes Warren)(Luminate)(Red foot)(the live green company spa)(Mercado libre)(regional foot)(Brinox)(diwal)(covepa)(All Clean)(riccardi spa)(lernen)(Dex expres)(Dexpress)(Green Food spa)", oldNames: ""},
+            {code: "Z007", name: "?", oldNames: "Inmuebles Cataluña Limitada (angel mo)"},
+            {code: "Z008", name: "Inmuebles Cataluña Limitada (angel mo)", oldNames: "Comercializadora Y Distribuidora Angelo Araya Acevedo E.i.r.l. (Score)"},
+            {code: "Z009", name: "ABCE Integral Logictic Spa", oldNames: "Doite International S.a.//Lucchetti Chile S.a.//Andes Retail Spa.//Transportes Supertrans Limitada. (Trans Sur)(Transporte Sur)(A.B.E.)(ABE)(AVE)(ABC Logistic)(ABC integral)(Glitt Spa)"},
+            {code: "Z010", name: "?", oldNames: "Inmuebles Cataluña Limitada"},
+            {code: "Z011", name: "Logistic Plus Spa", oldNames: ""}
+        ];
+
+        let currentFilter = 'all';
+
+        // Cargar datos del localStorage
+        function loadFromStorage() {
+            const stored = localStorage.getItem('bsfWarehouses');
+            if (stored) {
+                warehouses = JSON.parse(stored);
+            }
+            updateStats();
+        }
+
+        // Guardar en localStorage
+        function saveToStorage() {
+            localStorage.setItem('bsfWarehouses', JSON.stringify(warehouses));
+            updateStats();
+        }
+        // Actualizar estadísticas
+        function updateStats() {
+            const total = warehouses.length;
+            const active = warehouses.filter(w => w.code !== '?').length;
+            const unknown = warehouses.filter(w => w.code === '?').length;
+            
+            document.getElementById('totalWarehouses').textContent = total;
+            document.getElementById('activeWarehouses').textContent = active;
+            document.getElementById('unknownWarehouses').textContent = unknown;
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('es-CL', {day: '2-digit', month: '2-digit'});
+        }
+
+        // Filtrar por tipo
+        function filterBy(type, btn) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderWarehouses(document.getElementById('searchInput').value);
+        }
+
+        // Renderizar lista de bodegas
+        function renderWarehouses(filter = '') {
+            const list = document.getElementById('warehousesList');
+            let filtered = warehouses;
+
+            // Aplicar filtro de tipo
+            if (currentFilter === 'known') {
+                filtered = filtered.filter(w => w.code !== '?');
+            } else if (currentFilter === 'unknown') {
+                filtered = filtered.filter(w => w.code === '?');
+            }
+
+            // Aplicar filtro de búsqueda
+            if (filter) {
+                filtered = filtered.filter(w => 
+                    w.code.toLowerCase().includes(filter.toLowerCase()) ||
+                    w.name.toLowerCase().includes(filter.toLowerCase()) ||
+                    w.oldNames.toLowerCase().includes(filter.toLowerCase())
+                );
+            }
+
+            document.getElementById('resultsCount').textContent = `${filtered.length} bodegas`;
+
+            if (filtered.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📦</div>
+                        <h3>No se encontraron bodegas</h3>
+                        <p>Intenta con otro término de búsqueda</p>                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = filtered.map(w => `
+                <div class="warehouse-item">
+                    <div class="warehouse-header">
+                        <div class="warehouse-code">${w.code}</div>
+                    </div>
+                    <div class="warehouse-name">${w.name}</div>
+                    ${w.oldNames ? `<div class="warehouse-old-names"><strong>📋 Anteriores:</strong> ${w.oldNames}</div>` : ''}
+                    <div class="warehouse-actions">
+                        <button class="btn-edit" onclick="editWarehouse('${w.code.replace(/'/g, "\\'")}')">✏️ Editar</button>
+                        <button class="btn-delete" onclick="deleteWarehouse('${w.code.replace(/'/g, "\\'")}')">🗑️ Eliminar</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Abrir modal para agregar
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = 'Agregar Bodega';
+            document.getElementById('warehouseForm').reset();
+            document.getElementById('warehouseModal').classList.add('active');
+            window.editingCode = null;
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            document.getElementById('warehouseModal').classList.remove('active');
+        }
+
+        // Editar bodega
+        function editWarehouse(code) {
+            const warehouse = warehouses.find(w => w.code === code);
+            if (!warehouse) return;
+
+            document.getElementById('modalTitle').textContent = 'Editar Bodega';
+            document.getElementById('code').value = warehouse.code;
+            document.getElementById('name').value = warehouse.name;
+            document.getElementById('oldNames').value = warehouse.oldNames;
+            document.getElementById('warehouseModal').classList.add('active');
+            window.editingCode = code;
+        }
+
+        // Eliminar bodega
+        function deleteWarehouse(code) {
+            if (confirm(`¿Estás seguro de eliminar la bodega ${code}?\n\nEsta acción no se puede deshacer.`)) {
+                warehouses = warehouses.filter(w => w.code !== code);                saveToStorage();
+                renderWarehouses(document.getElementById('searchInput').value);
+                showNotification('✅ Bodega eliminada correctamente');
+            }
+        }
+
+        // Mostrar notificación
+        function showNotification(message, isError = false) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = 'notification show' + (isError ? ' error' : '');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Exportar datos
+        function exportData() {
+            const dataStr = JSON.stringify(warehouses, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `bodegas_bsf_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+            showNotification('📥 Datos exportados correctamente');
+        }
+
+        // Importar datos
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        warehouses = imported;
+                        saveToStorage();
+                        renderWarehouses();
+                        showNotification('📤 Datos importados correctamente');
+                    } else {
+                        showNotification('❌ Formato de archivo inválido', true);
+                    }
+                } catch (err) {
+                    showNotification('❌ Error al importar archivo', true);
+                }
+            };            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // Mostrar sección
+        function showSection(section) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            if (section === 'contact') {
+                document.querySelector('.contact-info').scrollIntoView({behavior: 'smooth'});
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderWarehouses(e.target.value);
+        });
+
+        document.getElementById('warehouseForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const code = document.getElementById('code').value.trim().toUpperCase();
+            const name = document.getElementById('name').value.trim();
+            const oldNames = document.getElementById('oldNames').value.trim();
+
+            if (!code || !name) {
+                showNotification('❌ Código y nombre son obligatorios', true);
+                return;
+            }
+
+            if (window.editingCode) {
+                const index = warehouses.findIndex(w => w.code === window.editingCode);
+                if (index !== -1) {
+                    if (code !== window.editingCode && warehouses.find(w => w.code === code)) {
+                        showNotification('❌ El código ya existe', true);
+                        return;
+                    }
+                    warehouses[index] = {code, name, oldNames};
+                    showNotification('✅ Bodega actualizada correctamente');
+                }
+                window.editingCode = null;
+            } else {
+                if (warehouses.find(w => w.code === code)) {
+                    showNotification('❌ El código ya existe', true);
+                    return;
+                }
+                warehouses.push({code, name, oldNames});
+                showNotification('✅ Bodega agregada correctamente');
+            }
+            saveToStorage();
+            closeModal();
+            renderWarehouses(document.getElementById('searchInput').value);
+        });
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('warehouseModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('warehouseModal')) {
+                closeModal();
+            }
+        });
+
+        // Prevenir zoom en iOS
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+
+        // Inicializar
+        loadFromStorage();
+        renderWarehouses();
+
+        // Mostrar mensaje de carga completada
+        setTimeout(() => {
+            showNotification('🎉 App lista para usar - Guardias de Asper');
+        }, 1000);
+    </script>
+</body>
+</html>
